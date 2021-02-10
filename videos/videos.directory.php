@@ -1,0 +1,1 @@
+<?php $videos_map = dirname(__FILE__) . '/'; ?>

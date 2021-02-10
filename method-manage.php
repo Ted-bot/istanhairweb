@@ -1,12 +1,12 @@
 <?php	
 	include_once 'admin-nav.php';
 	include_once 'admin-page-header.php';
-	include_once 'includes/page.incl.php';
+	include_once 'includes/method.incl.php';
 ?>
 <main class="">
 	<div class="container">
 		<div class="col-sm-10">
-		<h1 class="font-weight-light text-center text-lg-left mt-4 mb-0">Overzicht artikelen</h1>
+		<h1 class="font-weight-light text-center text-lg-left mt-4 mb-0">Overzicht Methodes</h1>
 		<br>
 			<table style="width:100%">
 				<tr>
@@ -15,23 +15,23 @@
 					<th>Beschr.</th>
 					<th>Bewerk</th>
 					<th>Verwijder</th>
-					<th>Artikel nr.</th>
+					<th>Methode nr.</th>
 				</tr>
 			<?php
-				$query = "SELECT * FROM pages ORDER BY idPage DESC";
+				$query = "SELECT * FROM method ORDER BY idMethod DESC";
 					$run = $conn->query($query);
 					$rowsCount = mysqli_num_rows($run);
 					$count = 0;
 						while ($row = mysqli_fetch_array($run)) {
-							$descString = $row["descPage"];
+							$descString = $row["descMethod"];
 								echo '<tr>';
-									echo '<td><img src="img/gallery/' . $row["imgPage"] . '" alt="" class="imgPosition4" style="width:150px;">
+									echo '<td><img src="img/methods/' . $row["imgNameMethod"] . '" alt="" class="imgPosition4" style="width:150px;">
 									</td>';	
-									echo '<td> <h5>' . $row["titlePage"] . '</h5> </td>';
+									echo '<td> <h5>' . $row["titleMethod"] . '</h5> </td>';
 									echo '<td> <p>' . substr($descString, 0, 30) . '</p> </td>';
-									echo '<td> <a href="page-edit.php?pageId=' . $row["idPage"] . '"><button>Bewerk</button></a></td>';
-									echo '<td> <a href="page-delete.php?pageId=' . $row["idPage"] . '&&pageImg=' . $row["imgPage"] . '&&pageTitle=' . $row["titlePage"]  .  '&&pageDesc=' . $row["descPage"] . '"><button>Verwijder</button></a> </td>';
-									echo '<td> <p>' . $row["idPage"] . '</p> </td>';
+									echo '<td> <a href="method-edit.php?pageId=' . $row["idMethod"] . '"><button>Bewerk</button></a></td>';
+									echo '<td> <a href="method-delete.php?pageId=' . $row["idMethod"] . '&&pageImg=' . $row["imgNameMethod"] . '&&pageTitle=' . $row["titleMethod"]  .  '&&pageDesc=' . $row["descMethod"] . '"><button>Verwijder</button></a> </td>';
+									echo '<td> <p>' . $row["idMethod"] . '</p> </td>';
 								echo '</tr>';							
 						}
 				?>

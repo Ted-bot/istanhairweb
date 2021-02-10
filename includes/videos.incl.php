@@ -1,43 +1,42 @@
 <?php
 
-if (isset($_POST['page-upload'])) {
-	$newFileName = $_POST['page-title'];
+if (isset($_POST['video-upload'])) {
+	$newFileName = $_POST['video-title'];
 	
 	if (empty($newFileName)) {
-		$newFileName = "gallery";
+		$newFileName = "video";
 	} else {
 		//create lowercase of filename and replace empty space with -
 		$newFileName = strtolower(str_replace(" ", "-", $newFileName));
 	}
-	$imgTitle = $_POST['page-title'];
-	$imgDescr = $_POST['page-descr'];
+	$imgTitle = $_POST['video-title'];
 	
-	$pageImg = $_FILES['page-img'];
+	$videoObject = $_FILES['video-file'];
 	
-	$fileName = $pageImg['name'];
-	$fileType = $pageImg['type'];
-	$fileTempName = $pageImg['tmp_name'];
-	$fileError = $pageImg['error'];
-	$fileSize = $pageImg['size'];
+	$fileName = $videoObject['name'];
+	$fileType = $videoObject['type'];
+	$fileTempName = $videoObject['tmp_name'];
+	$fileError = $videoObject['error'];
+	$fileSize = $videoObject['size'];
 	
 	$fileExtension = explode(".", $fileName);
 	$fileActualExt = strtolower(end($fileExtension));
 	
-	$allowed = array("jpg", "jpeg", "png");
+	$allowed = array("mp4");
 	
 	if (in_array($fileActualExt, $allowed)) {
 		if ($fileError === 0) {
-			if ( $fileSize < 2000000 ){
+			if ( $fileSize < 105000000  ){
 				$imageFullName = $newFileName . "." . uniqid("", true) . "." . $fileActualExt;
-				$fileDestination = "../img/gallery/" . $imageFullName;
+				$fileDestination = "../videos/" . $imageFullName;
 				
 				include_once "dbh.incl.php";
 				
-				if (empty($imgTitle) || empty($imgDescr)) {
-					header("Location: ../page-post.php?upload=empty");
+				if (empty($imgTitle)) {
+					header("Location: ../videos-post.php?upload=empty");
 					exit();
 				} else {
-					$sql = "SELECT * FROM pages;";
+					$sql = "SELECT * FROM videos";
 					$stmt = mysqli_stmt_init($conn);
 					if (!mysqli_stmt_prepare($stmt, $sql)) {
 						echo"SQL statement gefaald 1!";
@@ -47,18 +46,18 @@ if (isset($_POST['page-upload'])) {
 //						$rowCount = mysqli_num_rows($result);
 //						$setImageOrder = $rowCount + 1;
 						
-						$sql = "INSERT INTO pages (titlePage, descPage, imgPage) VALUES (?, ?, ?);";
+						$sql = "INSERT INTO videos (titleVideos, youtubeVideos) VALUES (?, ?);";
 						if (!mysqli_stmt_prepare($stmt, $sql)) {
 						echo "SQL statement gefaald 2!";
 						}
 						else {
 							// bind 3 strings to statement
-							mysqli_stmt_bind_param($stmt, "sss", $imgTitle, $imgDescr, $imageFullName);
+							mysqli_stmt_bind_param($stmt, "ss", $imgTitle, $imageFullName);
 							mysqli_stmt_execute($stmt);
 							
 							move_uploaded_file($fileTempName, $fileDestination);
 							
-							header("Location: ../page-manage.php?upload=succes");
+							header("Location: ../videos-post.php?upload=succes");
 							exit();
 						}
 					}
@@ -76,32 +75,32 @@ if (isset($_POST['page-upload'])) {
 		echo 'Om een bestand te uploaden moet het een PNG/JPEG/JPG bestand zijn!';
 	}
 	
-	print_r($pageImg);
+	print_r($videoObject);
 	
 }
 
-if (isset($_POST['edit-page'])) {
-	//Get posted Variables user entered
-	$page_Id = $_GET['pageId'];
-	
-	$newFileName = $_POST['page-title-edit'];
+// foreach($_POST['name'] as $name)
+if (isset($_POST["edit-video"])) {
+	// $number = $_POST["id"];    
+
+	// foreach($_POST["id"] AS $num) {	
+	$newFileName = $_POST['video-title-edit'];
 	
 	if (empty($newFileName)) {
-		$newFileName = "page-gallery";
+		$newFileName = "video";
 	} else {
 		//create lowercase of filename and replace empty space with -
 		$newFileName = strtolower(str_replace(" ", "-", $newFileName));
 	}
-	$imgTitle = $_POST['page-title-edit'];
-	$imgDescr = $_POST['page-text-edit'];
+	$imgTitle = $_POST['videos-title-edit'];
 	
-	$pageImg = $_FILES['edit-page-img'];
+	$videoObject = $_FILES['edit-videos-name'];
 	
-	$fileName = $pageImg['name'];
-	$fileType = $pageImg['type'];
-	$fileTempName = $pageImg['tmp_name'];
-	$fileError = $pageImg['error'];
-	$fileSize = $pageImg['size'];
+	$fileName = $videoObject['name'];
+	$fileType = $videoObject['type'];
+	$fileTempName = $videoObject['tmp_name'];
+	$fileError = $videoObject['error'];
+	$fileSize = $videoObject['size'];
 	
 	$fileExtension = explode(".", $fileName);
 	$fileActualExt = strtolower(end($fileExtension));
@@ -110,20 +109,20 @@ if (isset($_POST['edit-page'])) {
 	
 	if (empty($fileName)) {
 		include_once "dbh.incl.php";
-		$sql = "SELECT titlePage, descPage FROM pages;";
+		$sql = "SELECT titleVideos, youtubeVideos FROM videos;";
 		$stmt = mysqli_stmt_init($conn);
 		if (!mysqli_stmt_prepare($stmt, $sql)) {
 				printf("SQL statement gefaald 1!");
 			} else {
 				mysqli_stmt_execute($stmt);
 				$result = mysqli_stmt_get_result($stmt);
-				$sql = "UPDATE pages SET titlePage =?, descPage =? WHERE idPage =?";
+				$sql = "UPDATE videos SET titleVideos =?, youtubeVideos =? WHERE idvideos =?";
 				if (!mysqli_stmt_prepare($stmt, $sql)) {
 					print("SQL statement gefaald 2!");
 				} else {
-					mysqli_stmt_bind_param($stmt, "sss", $imgTitle, $imgDescr, $page_Id);
+					mysqli_stmt_bind_param($stmt, "sss", $imgTitle, $imgDescr, $videos_id);
 					mysqli_stmt_execute($stmt);
-					header("Location: ../blog-app/page-manage.php?pageId=". $page_Id ."&uploadtextonly=succes");
+					header("Location: ../blog-app/videos-post.php?uploadtextonly=succes");
 					exit();
 				} 
 			}
@@ -135,15 +134,15 @@ if (isset($_POST['edit-page'])) {
 								// create new name for uploaded file with Uniq Id
 								$imageFullName = $newFileName . "." . uniqid("", true) . "." . $fileActualExt;
 								// destination of file uploaded
-								$fileDestination = dirname(__DIR__) . "/img/gallery/" . $imageFullName;
+								$fileDestination = dirname(__DIR__) . "/img/methods/" . $imageFullName;
 
 								include_once "dbh.incl.php";
 
 								if (empty($imgTitle) || empty($imgDescr)) {
-									header("Location: /blog-app/page-edit.php?uploadTitle&Description=empty");
+									header("Location: /blog-app/videos-edit.php?uploadTitle&Description=empty");
 									exit();
 								} else {
-									$sql = "SELECT titlePage, descPage, imgPage FROM pages;";
+									$sql = "SELECT titlevideos, descvideos, imgvideos FROM videoss;";
 									$stmt = mysqli_stmt_init($conn);
 									if (!mysqli_stmt_prepare($stmt, $sql)) {
 										echo"SQL statement gefaald 1!";
@@ -152,7 +151,7 @@ if (isset($_POST['edit-page'])) {
 										$result = mysqli_stmt_get_result($stmt);
 										$rowCount = mysqli_num_rows($result);
 										$setImageOrder = $rowCount + 1;
-										$sql = "UPDATE pages SET titlePage ='" . $imgTitle . "', descPage ='" . $imgDescr . "', imgPage ='" . $imageFullName . "' WHERE idPage ='" . $page_Id . "' ";
+										$sql = "UPDATE videoss SET titlevideos ='" . $imgTitle . "', descvideos ='" . $imgDescr . "', imgvideos ='" . $imageFullName . "' WHERE idvideos ='" . $videos_id . "' ";
 									if (!mysqli_stmt_prepare($stmt, $sql)) {
 										echo "SQL statement gefaald 2!";
 										} else {
@@ -160,14 +159,14 @@ if (isset($_POST['edit-page'])) {
 											mysqli_stmt_execute($stmt);
 											if (file_exists($fileTempName)) {
 												if (move_uploaded_file($fileTempName, $fileDestination)){
-													header("Location: /blog-app/posts-manage.php?pageId=" . $page_Id . "&upload=succes");
+													// header("Location: /blog-app/posts-manage.php?videosId=" . $videos_id . "&upload=succes");
 													exit();
 												} else {
-													header("Location: /blog-app/page-edit.php?pageId=" . $page_Id . "&uploadImage=failed");
+													// header("Location: /blog-app/videos-edit.php?videosId=" . $videos_id . "&uploadImage=failed");
 													exit();
 												}
 											} else {
-												header("Location: /blog-app/page-edit.php?pageId=" . $page_Id . "&uploadImage=fileDoesntExist");
+												// header("Location: /blog-app/videos-edit.php?videosId=" . $videos_id . "&uploadImage=fileDoesntExist");
 												exit();
 											}
 						}
@@ -183,9 +182,9 @@ if (isset($_POST['edit-page'])) {
 
 // Delete article
 if (isset($_POST['yes-delete'])) {
-		$page_Id = $_GET['pageId'];
+		$videos_Id = $_GET['delete-video'];
 		include_once "dbh.incl.php";		
-		$sql = "SELECT idPage FROM pages";
+		$sql = "SELECT youtubeVideos FROM videos WHERE idVideos = '" . $_GET["delete-video"]  . "' LIMIT 1";
 		$stmt = mysqli_stmt_init($conn);
 				if (!mysqli_stmt_prepare($stmt, $sql)) {
 					echo"SQL statement gefaald 1!";
@@ -196,13 +195,34 @@ if (isset($_POST['yes-delete'])) {
 					} else {
 					mysqli_stmt_execute($stmt);
 					$result = mysqli_stmt_get_result($stmt);
-					$sql = "DELETE FROM pages WHERE idPage ='" . $page_Id  . "'";
+					
+					$myArray = array();
+
+					// get image name from server
+					if ($myArray = mysqli_fetch_assoc($result)) { 
+						echo 'wat is dit ';
+						$row = $myArray['youtubeVideos'];
+						//file includes absolute file
+						include_once('videos/videos.directory.php');
+
+						// $img_map; from directory
+
+						$target_path = $img_map . $row;
+						echo 'naar ' . $target_path;
+					
+						// delete file from directory
+						unlink($target_path);
+					}
+					// delete image from data base
+
+					$sql = "DELETE FROM videos WHERE idVideos =" . $videos_Id  . " ";
+
 					if (!mysqli_stmt_prepare($stmt, $sql)) {
 						echo "SQL statement gefaald 3!";
 					} else {			
 							mysqli_stmt_bind_param($stmt);
 							mysqli_stmt_execute($stmt);
-							header("Location: /blog-app/page-manage.php?artikelId=" . $page_Id . "&delete=succes");
+							header("Location: /blog-app/videos-post.php?videoslId=" . $videos_Id . "&delete=succes");
 							exit();
 												
 						} 
@@ -211,7 +231,7 @@ if (isset($_POST['yes-delete'])) {
 
 
 if (isset($_POST['no-delete'])) {
-		$page_Id = $_GET['pageId'];
-			header("Location: /blog-app/page-manage.php?page_Id=" . $page_Id . "&delete=succes");
+		$delete = $_GET['yes-delete'];
+			header("Location: /blog-app/videos-post.php?videos_Id=" . $delete_Id . "&delete=stopped");
 			exit();
 	}

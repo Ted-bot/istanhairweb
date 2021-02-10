@@ -52,8 +52,56 @@
 							  <div class="sidebar-heading">
 								Interface
 							  </div>
-								<br>
-							  <!-- Nav Item - Pages Collapse Menu -->
+							  <br>
+							  <!-- Methods  -->
+							  <li class="nav-item">
+								<a class="nav-link collapsed text-white" href="#" data-toggle="collapse" data-target="#collapseFour" aria-expanded="true" aria-controls="collapseFour">
+								  <i class="fas fa-fw fa-cog"></i>
+								  <span class="border-bottom border-white">Voorpagina</span>
+								</a>
+								<div id="collapseFour" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+								  <div class="bg-white py-2 collapse-inner rounded">
+									<a class="collapse-item text-dark" href="method-post.php">werkwijze toevoegen</a>
+									<br>
+									<hr class="sidebar-divider my-0">
+									<a class="collapse-item text-dark" href="method-manage.php">aanpassen werkwijze</a>
+									<br>
+									<hr class="sidebar-divider my-0">
+									<a class="collapse-item text-dark" href="home-page-post.php?pageId=1">slides</a>
+									<br>
+									<hr class="sidebar-divider my-0">
+									<a class="collapse-item text-dark" href="banner-post.php?pageId=1">banner</a>
+									<br>
+									<hr class="sidebar-divider my-0">
+									<a class="collapse-item text-dark" href="videos-post.php?pageId=1">videos</a>
+								  </div>
+								</div>
+							  </li>
+							  
+							  <br>
+
+							   <!-- Upload new pages-->
+							   <li class="nav-item">
+								<a class="nav-link collapsed text-white" href="#" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">
+								  <i class="fas fa-fw fa-cog"></i>
+								  <span class="border-bottom border-white">Pagina's</span>
+								</a>
+								<div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+								  <div class="bg-white py-2 collapse-inner rounded">
+						
+						
+									<a class="collapse-item text-dark" href="page-post.php">Upload Pagina</a>
+									<br>
+									<hr class="sidebar-divider my-0">
+									<a class="collapse-item text-dark" href="page-manage.php">Overzicht pagina's</a>
+									<br>
+								  </div>
+								</div>
+							  </li>
+							  
+							  <br>
+
+							  <!-- Upload Articles -->
 							  <li class="nav-item">
 								<a class="nav-link collapsed text-white" href="#" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseTwo">
 								  <i class="fas fa-fw fa-cog"></i>
@@ -72,25 +120,7 @@
 							  
 							  <br>
 							  
-							   <li class="nav-item">
-								<a class="nav-link collapsed text-white" href="#" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">
-								  <i class="fas fa-fw fa-cog"></i>
-								  <span class="border-bottom border-white">Pagina's</span>
-								</a>
-								<div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
-								  <div class="bg-white py-2 collapse-inner rounded">
-						<!--<h6 class="collapse-header text-secondary">inhoud artikelen</h6>-->
-									<a class="collapse-item text-dark" href="page-post.php">Upload Pagina</a>
-									<br>
-									<hr class="sidebar-divider my-0">
-									<a class="collapse-item text-dark" href="page-manage.php">Overzicht pagina's</a>
-									<br>
-								  </div>
-								</div>
-							  </li>
-							  
-							  <br>
-							  
+							 <!-- Menu  -->
 							  <li class="nav-item">
 								<a class="nav-link collapsed text-white" href="#" data-toggle="collapse" data-target="#collapseThree" aria-expanded="true" aria-controls="collapseThree">
 								  <i class="fas fa-fw fa-cog"></i>
@@ -103,6 +133,8 @@
 								  </div>
 								</div>
 							  </li>
+
+							  <br>
 							  
 						  </section>
 						</div>

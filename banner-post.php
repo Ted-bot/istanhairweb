@@ -1,0 +1,76 @@
+<?php 
+	include_once 'admin-nav.php';
+	include_once 'admin-page-header.php';
+	include_once 'functions.php';
+?>
+<main class="container my-5">
+		<div class="col-sm-10">
+		
+			<section class="align-self-center">
+			<h1 class="font-weight-light text-center text-lg-left mt-4 mb-0">Banner pagina</h1>
+			<br>
+			<form action="includes/banner.incl.php" method="post" enctype="multipart/form-data">
+			
+			<input type="text" name="banner-title" placeholder="Pagina titel.." style="width:100%;"><br><br>
+			<textarea name="banner-desc" id="" cols="30" placeholder="pagina beschrijving.."rows="10" style="width:100%;"></textarea>
+			<hr>
+							
+<!--			<input type="text" name="page-name" placeholder="afbeelding naam.." style="width:100%;"><br><br>-->
+			<input type="file" name="banner-file" id="default-btn" onchange="loadFile(event)" hidden>
+			<button type="button" onclick="defaultBtnActive()" id="custom-btn">Kies een afbeelding</button>
+
+			
+			<!-- <input id="default-btn" type="file" hidden> -->
+			<div >
+				<div id="cancel-btn" style="position: relative; margin-bottom: -25px; padding-left: 475px; z-index: 30;">
+					<i class="fas fa-times"></i>
+				</div>
+
+				<div class="image-preview" onload="start()" onclick="defaultBtnActive()" id="custom-btn" 
+					style="display: flex; justify-content:center; width: 500px; height: 300px; 
+  						border: 2px dashed #cdcdda; ";>
+					<img src=" " alt="" style="position: absolute; width: 500px; height: 300px; object-fit: cover;" id="output">
+					<div class="icon">
+						<i class="fas fa-cloud-upload-alt" style="line-height: 275px; padding-left: 50px;"></i>
+					</div>
+				<div style="position: absolute; line-height: 500px; z-index: 10;">
+					<span class="image-preview__text" style="font-size: 30px; color: grey;">voorbeeld afbeelding</span>
+				</div>
+				
+			</div>
+
+			</div>
+			
+			<div class="file-name">
+						<!-- geslecteerde Bestand Naam -->
+					</div>
+			<hr>
+				<section class="form-group">		
+					<button type="submit" name="banner-upload">Banner Uploaden</button>					
+				</section>
+			</form>		
+		</section>
+		</div>		
+		<br>
+	<hr>
+
+<h1>Banner beschikbaar</h1>
+
+<div class="col">
+	<div class="row-xs-6 row-md-3">
+		<?php banner_thumbnails(); ?>
+	</div>
+</div>
+</main>
+<script src="preview-image.js"></script>
+<script src="https://kit.fontawesome.com/a076d05399.js"></script>
+<script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+</body>
+<!-- admin-page-header -->
+</div>
+<?php
+	ob_end_flush();
+	'footer.php';
+?>

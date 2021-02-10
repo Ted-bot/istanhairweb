@@ -17,8 +17,8 @@
 
 <body>
 
-	<header >
-		<nav class="navbar navbar-light navbar-expand-sm fixed-top bg-light" style="display: inline-flex;">	
+	<header>
+		<nav class="navbar navbar-light navbar-expand-sm fixed-navbar bg-light" style="display: inline-flex;">	
 			
 			<section class="row" style="width:100%;">	
 			<div class="sidebar-brand-text mx-2">

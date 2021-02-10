@@ -1,18 +1,18 @@
 <?php
 
-if (isset($_POST['page-upload'])) {
-	$newFileName = $_POST['page-title'];
+if (isset($_POST['method-upload'])) {
+	$newFileName = $_POST['method-title'];
 	
 	if (empty($newFileName)) {
-		$newFileName = "gallery";
+		$newFileName = "method";
 	} else {
 		//create lowercase of filename and replace empty space with -
 		$newFileName = strtolower(str_replace(" ", "-", $newFileName));
 	}
-	$imgTitle = $_POST['page-title'];
-	$imgDescr = $_POST['page-descr'];
+	$imgTitle = $_POST['method-title'];
+	$imgDescr = $_POST['method-descr'];
 	
-	$pageImg = $_FILES['page-img'];
+	$pageImg = $_FILES['method-img'];
 	
 	$fileName = $pageImg['name'];
 	$fileType = $pageImg['type'];
@@ -29,15 +29,15 @@ if (isset($_POST['page-upload'])) {
 		if ($fileError === 0) {
 			if ( $fileSize < 2000000 ){
 				$imageFullName = $newFileName . "." . uniqid("", true) . "." . $fileActualExt;
-				$fileDestination = "../img/gallery/" . $imageFullName;
+				$fileDestination = "../img/methods/" . $imageFullName;
 				
 				include_once "dbh.incl.php";
 				
 				if (empty($imgTitle) || empty($imgDescr)) {
-					header("Location: ../page-post.php?upload=empty");
+					header("Location: ../method-post.php?upload=empty");
 					exit();
 				} else {
-					$sql = "SELECT * FROM pages;";
+					$sql = "SELECT * FROM method;";
 					$stmt = mysqli_stmt_init($conn);
 					if (!mysqli_stmt_prepare($stmt, $sql)) {
 						echo"SQL statement gefaald 1!";
@@ -47,7 +47,7 @@ if (isset($_POST['page-upload'])) {
 //						$rowCount = mysqli_num_rows($result);
 //						$setImageOrder = $rowCount + 1;
 						
-						$sql = "INSERT INTO pages (titlePage, descPage, imgPage) VALUES (?, ?, ?);";
+						$sql = "INSERT INTO method (titleMethod, descMethod, imgNameMethod) VALUES (?, ?, ?);";
 						if (!mysqli_stmt_prepare($stmt, $sql)) {
 						echo "SQL statement gefaald 2!";
 						}
@@ -58,7 +58,7 @@ if (isset($_POST['page-upload'])) {
 							
 							move_uploaded_file($fileTempName, $fileDestination);
 							
-							header("Location: ../page-manage.php?upload=succes");
+							header("Location: ../method-manage.php?upload=succes");
 							exit();
 						}
 					}

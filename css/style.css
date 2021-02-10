@@ -5,7 +5,17 @@
 input[type="file"] {
 	width:125px;
 }
+
+/*  ==================  Nav  ==================  */
+
+li > div > div {
+	padding: 5px;
+}
 /*  ==================  Index-page  ==================  */
+
+div.div.div.a {
+	display: hidden;
+}
 
 /* hovering posts*/
 .a-hover:hover {
@@ -95,6 +105,17 @@ input[type="file"] {
 }
 
 
+/* --------------------------------------- Header------------------------------------ */
+
+.fixed-navbar {
+    position: fixed;
+    top: 0;
+    right: 0;
+    left: 0;
+    z-index: 5;
+}
+
+
 /* --------------------------------------- LOGIN --------------------------------------- */
 
 .response-btn {
@@ -177,7 +198,6 @@ width: 40%;
 top: 100px;
 padding-bottom: 30px;
 }
-
  
 /* The Close Button (x) */
 .close {
@@ -201,6 +221,16 @@ animation: zoom 0.6s
 from {transform: scale(0)}
 to {transform: scale(1)}
 }
+
+/* --------------------------------------- Admin Slider --------------------------------------- */
+
+.icon{
+	position: absolute;
+	font-size: 100px;
+	color: lightgrey;
+	width: 250px;	
+	z-index; 20;
+  }
 
 /* ------------------------------ MEDIA QUERY DEVICE 1: 41.88 em Iphone (769 - 1200 px) ------------------------------ */
 
@@ -262,6 +292,7 @@ to {transform: scale(1)}
 	.fixImg {
 		position:sticky; left:10px; top:10px;
 	}
+
 	/* pop up margin top	*/
 	.modal-respons {
 		top:300px;
@@ -289,7 +320,7 @@ to {transform: scale(1)}
 	.index-row-1-a{
 		max-width:100%;
 		width:100%;
-		margin:2rem;
+		margin: 2rem;
 	}
 	
 	.imgPosition1 {
@@ -310,3 +341,4 @@ to {transform: scale(1)}
 	}
 }
 
+}

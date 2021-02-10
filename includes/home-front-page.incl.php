@@ -1,18 +1,18 @@
 <?php
 
-if (isset($_POST['page-upload'])) {
-	$newFileName = $_POST['page-title'];
+if (isset($_POST['home-page-upload'])) {
+	$newFileName = $_POST['home-page-title'];
 	
 	if (empty($newFileName)) {
-		$newFileName = "gallery";
+		$newFileName = "carousel";
 	} else {
 		//create lowercase of filename and replace empty space with -
 		$newFileName = strtolower(str_replace(" ", "-", $newFileName));
 	}
-	$imgTitle = $_POST['page-title'];
-	$imgDescr = $_POST['page-descr'];
+	$imgTitle = $_POST['home-page-title'];
+	$imgDescr = $_POST['home-page-desc'];
 	
-	$pageImg = $_FILES['page-img'];
+	$pageImg = $_FILES['home-page-file'];
 	
 	$fileName = $pageImg['name'];
 	$fileType = $pageImg['type'];
@@ -29,15 +29,15 @@ if (isset($_POST['page-upload'])) {
 		if ($fileError === 0) {
 			if ( $fileSize < 2000000 ){
 				$imageFullName = $newFileName . "." . uniqid("", true) . "." . $fileActualExt;
-				$fileDestination = "../img/gallery/" . $imageFullName;
+				$fileDestination = "../img/carousel/" . $imageFullName;
 				
 				include_once "dbh.incl.php";
 				
 				if (empty($imgTitle) || empty($imgDescr)) {
-					header("Location: ../page-post.php?upload=empty");
+					header("Location: ../home-page-post.php?upload=empty");
 					exit();
 				} else {
-					$sql = "SELECT * FROM pages;";
+					$sql = "SELECT * FROM homecarousel;";
 					$stmt = mysqli_stmt_init($conn);
 					if (!mysqli_stmt_prepare($stmt, $sql)) {
 						echo"SQL statement gefaald 1!";
@@ -47,7 +47,7 @@ if (isset($_POST['page-upload'])) {
 //						$rowCount = mysqli_num_rows($result);
 //						$setImageOrder = $rowCount + 1;
 						
-						$sql = "INSERT INTO pages (titlePage, descPage, imgPage) VALUES (?, ?, ?);";
+						$sql = "INSERT INTO homecarousel (titleCarousel, descCarousel, mediaCarousel) VALUES (?, ?, ?);";
 						if (!mysqli_stmt_prepare($stmt, $sql)) {
 						echo "SQL statement gefaald 2!";
 						}
@@ -58,7 +58,7 @@ if (isset($_POST['page-upload'])) {
 							
 							move_uploaded_file($fileTempName, $fileDestination);
 							
-							header("Location: ../page-manage.php?upload=succes");
+							header("Location: ../home-page-post.php?upload=succes");
 							exit();
 						}
 					}
@@ -80,10 +80,11 @@ if (isset($_POST['page-upload'])) {
 	
 }
 
-if (isset($_POST['edit-page'])) {
-	//Get posted Variables user entered
-	$page_Id = $_GET['pageId'];
-	
+// foreach($_POST['name'] as $name)
+if (isset($_POST["edit-home-page"])) {
+	// $number = $_POST["id"];    
+
+	// foreach($_POST["id"] AS $num) {	
 	$newFileName = $_POST['page-title-edit'];
 	
 	if (empty($newFileName)) {
@@ -92,10 +93,10 @@ if (isset($_POST['edit-page'])) {
 		//create lowercase of filename and replace empty space with -
 		$newFileName = strtolower(str_replace(" ", "-", $newFileName));
 	}
-	$imgTitle = $_POST['page-title-edit'];
-	$imgDescr = $_POST['page-text-edit'];
+	$imgTitle = $_POST['carousel-title-edit'];
+	$imgDescr = $_POST['casousel-text-edit'];
 	
-	$pageImg = $_FILES['edit-page-img'];
+	$pageImg = $_FILES['edit-carousel-img'];
 	
 	$fileName = $pageImg['name'];
 	$fileType = $pageImg['type'];
@@ -117,13 +118,13 @@ if (isset($_POST['edit-page'])) {
 			} else {
 				mysqli_stmt_execute($stmt);
 				$result = mysqli_stmt_get_result($stmt);
-				$sql = "UPDATE pages SET titlePage =?, descPage =? WHERE idPage =?";
+				$sql = "UPDATE homecarousel SET titleCarousel =?, descCarousel =? WHERE idCarousel =?";
 				if (!mysqli_stmt_prepare($stmt, $sql)) {
 					print("SQL statement gefaald 2!");
 				} else {
-					mysqli_stmt_bind_param($stmt, "sss", $imgTitle, $imgDescr, $page_Id);
+					mysqli_stmt_bind_param($stmt, "sss", $imgTitle, $imgDescr, $carousel_id);
 					mysqli_stmt_execute($stmt);
-					header("Location: ../blog-app/page-manage.php?pageId=". $page_Id ."&uploadtextonly=succes");
+					header("Location: ../blog-app/home-page-post.php?uploadtextonly=succes");
 					exit();
 				} 
 			}
@@ -135,7 +136,7 @@ if (isset($_POST['edit-page'])) {
 								// create new name for uploaded file with Uniq Id
 								$imageFullName = $newFileName . "." . uniqid("", true) . "." . $fileActualExt;
 								// destination of file uploaded
-								$fileDestination = dirname(__DIR__) . "/img/gallery/" . $imageFullName;
+								$fileDestination = dirname(__DIR__) . "/img/methods/" . $imageFullName;
 
 								include_once "dbh.incl.php";
 
@@ -152,7 +153,7 @@ if (isset($_POST['edit-page'])) {
 										$result = mysqli_stmt_get_result($stmt);
 										$rowCount = mysqli_num_rows($result);
 										$setImageOrder = $rowCount + 1;
-										$sql = "UPDATE pages SET titlePage ='" . $imgTitle . "', descPage ='" . $imgDescr . "', imgPage ='" . $imageFullName . "' WHERE idPage ='" . $page_Id . "' ";
+										$sql = "UPDATE pages SET titlePage ='" . $imgTitle . "', descPage ='" . $imgDescr . "', imgPage ='" . $imageFullName . "' WHERE idPage ='" . $carousel_id . "' ";
 									if (!mysqli_stmt_prepare($stmt, $sql)) {
 										echo "SQL statement gefaald 2!";
 										} else {
@@ -160,14 +161,14 @@ if (isset($_POST['edit-page'])) {
 											mysqli_stmt_execute($stmt);
 											if (file_exists($fileTempName)) {
 												if (move_uploaded_file($fileTempName, $fileDestination)){
-													header("Location: /blog-app/posts-manage.php?pageId=" . $page_Id . "&upload=succes");
+													// header("Location: /blog-app/posts-manage.php?pageId=" . $carousel_id . "&upload=succes");
 													exit();
 												} else {
-													header("Location: /blog-app/page-edit.php?pageId=" . $page_Id . "&uploadImage=failed");
+													// header("Location: /blog-app/page-edit.php?pageId=" . $carousel_id . "&uploadImage=failed");
 													exit();
 												}
 											} else {
-												header("Location: /blog-app/page-edit.php?pageId=" . $page_Id . "&uploadImage=fileDoesntExist");
+												// header("Location: /blog-app/page-edit.php?pageId=" . $carousel_id . "&uploadImage=fileDoesntExist");
 												exit();
 											}
 						}
@@ -183,9 +184,9 @@ if (isset($_POST['edit-page'])) {
 
 // Delete article
 if (isset($_POST['yes-delete'])) {
-		$page_Id = $_GET['pageId'];
+		$banner_Id = $_GET['delete-carousel'];
 		include_once "dbh.incl.php";		
-		$sql = "SELECT idPage FROM pages";
+		$sql = "SELECT mediaCarousel FROM homecarousel WHERE idCarousel = '" . $_GET["delete-carousel"]  . "' LIMIT 1";
 		$stmt = mysqli_stmt_init($conn);
 				if (!mysqli_stmt_prepare($stmt, $sql)) {
 					echo"SQL statement gefaald 1!";
@@ -196,13 +197,34 @@ if (isset($_POST['yes-delete'])) {
 					} else {
 					mysqli_stmt_execute($stmt);
 					$result = mysqli_stmt_get_result($stmt);
-					$sql = "DELETE FROM pages WHERE idPage ='" . $page_Id  . "'";
+					
+					$myArray = array();
+
+					// get image name from server
+					if ($myArray = mysqli_fetch_assoc($result)) { 
+						echo 'wat is dit ';
+						$row = $myArray['mediaCarousel'];
+						//file includes absolute file
+						include_once('img/carousel/carousel.directory.php');
+
+						// $img_map; from directory
+
+						$target_path = $img_map . $row;
+						echo 'naar ' . $target_path;
+					
+						// delete file from directory
+						unlink($target_path);
+					}
+					// delete image from data base
+
+					$sql = "DELETE FROM homecarousel WHERE idCarousel =" . $banner_Id  . " ";
+
 					if (!mysqli_stmt_prepare($stmt, $sql)) {
 						echo "SQL statement gefaald 3!";
 					} else {			
 							mysqli_stmt_bind_param($stmt);
 							mysqli_stmt_execute($stmt);
-							header("Location: /blog-app/page-manage.php?artikelId=" . $page_Id . "&delete=succes");
+							header("Location: /blog-app/home-page-post.php?bannerlId=" . $banner_Id . "&delete=succes");
 							exit();
 												
 						} 
@@ -211,7 +233,7 @@ if (isset($_POST['yes-delete'])) {
 
 
 if (isset($_POST['no-delete'])) {
-		$page_Id = $_GET['pageId'];
-			header("Location: /blog-app/page-manage.php?page_Id=" . $page_Id . "&delete=succes");
+		$delete = $_GET['yes-delete'];
+			header("Location: /blog-app/home-page-post.php?page_Id=" . $delete_Id . "&delete=stopped");
 			exit();
 	}

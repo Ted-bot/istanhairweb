@@ -169,7 +169,7 @@ if (isset($_POST['upload-article'])) {
 	$articleInput = array($articleTitle, $articleText, $articleDate, $articleCategory);
 	print_r($articleInput);				
 				if (empty($articleTitle) || empty($articleText)) {
-					header("Location: ../new/post.php?upload=empty");
+					header("Location: ../blog-app/post.php?upload=empty");
 					exit();
 				} else {
 					$sql = "SELECT artikelTitel, artikelTekst FROM artikelen;";
@@ -190,7 +190,7 @@ if (isset($_POST['upload-article'])) {
 							mysqli_stmt_bind_param($stmt, "ss", $articleTitle , $articleText);
 							mysqli_stmt_execute($stmt);
 							
-							header("Location: ../new/post.php?upload=succes");
+							header("Location: ../blog-app/post.php?upload=succes");
 							exit();
 						}
 					}
@@ -241,7 +241,7 @@ if (isset($_POST['edit-article'])) {
 			} else {
 					mysqli_stmt_bind_param($stmt, "sss", $imgTitle, $imgDescr, $artikelId);
 					mysqli_stmt_execute($stmt);					
-					header("Location: /new/posts-manage.php?artikelId=" . $artikelId . "&uploadtextonly=succes");
+					header("Location: /blog-app/posts-manage.php?artikelId=" . $artikelId . "&uploadtextonly=succes");
 					exit();
 					} 
 				}
@@ -256,7 +256,7 @@ if (isset($_POST['edit-article'])) {
 								include_once "dbh.incl.php";
 
 								if (empty($imgTitle) || empty($imgDescr)) {
-									header("Location: /new/edit.php?uploadTitle&Description=empty");
+									header("Location: /blog-app/edit.php?uploadTitle&Description=empty");
 									exit();
 								} else {
 									$sql = "SELECT titleGallery, descGallery, imgFullNameGallery FROM gallery;";
@@ -276,14 +276,14 @@ if (isset($_POST['edit-article'])) {
 											mysqli_stmt_execute($stmt);
 											if (file_exists($fileTempName)) {
 												if (move_uploaded_file($fileTempName, $fileDestination)){
-													header("Location: /new/posts-manage.php?artikelId=" . $artikelId . "&upload=succes");
+													header("Location: /blog-app/posts-manage.php?artikelId=" . $artikelId . "&upload=succes");
 													exit();
 												} else {
-													header("Location: /new/edit.php?artikelId=" . $artikelId . "&uploadImage=failed");
+													header("Location: /blog-app/edit.php?artikelId=" . $artikelId . "&uploadImage=failed");
 													exit();
 												}
 											} else {
-												header("Location: /new/edit.php?artikelId=" . $artikelId . "&uploadImage=fileDoesntExist");
+												header("Location: /blog-app/edit.php?artikelId=" . $artikelId . "&uploadImage=fileDoesntExist");
 												exit();
 											}
 						}
@@ -315,7 +315,7 @@ if (isset($_POST['yes-delete'])) {
 					} else {			
 							mysqli_stmt_bind_param($stmt);
 							mysqli_stmt_execute($stmt);
-							header("Location: /new/posts-manage.php?artikelId=" . $artikel_Id . "&delete=succes");
+							header("Location: /blog-app/posts-manage.php?artikelId=" . $artikel_Id . "&delete=succes");
 							exit();					
 						} 
 					}
@@ -324,6 +324,6 @@ if (isset($_POST['yes-delete'])) {
 
 if (isset($_POST['no-delete'])) {
 		$artikel_Id = $_GET['artikelId'];
-			header("Location: /new/posts-manage.php?artikelId=" . $artikel_Id . "&delete=succes");
+			header("Location: /blog-app/posts-manage.php?artikelId=" . $artikel_Id . "&delete=succes");
 			exit();
 	}

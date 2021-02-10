@@ -3,3 +3,6 @@ ssh-keygen -t rsa -b 4096 -C "tkbotch@gmail.com"
 
 Path & name ssh keygen:
 /c/Users/Eigenaar/.ssh/blog-app_id_rsa
+
+$ eval $(ssh-agent -s)
+Agent pid 501

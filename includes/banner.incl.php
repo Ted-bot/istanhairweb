@@ -1,24 +1,24 @@
 <?php
 
-if (isset($_POST['page-upload'])) {
-	$newFileName = $_POST['page-title'];
+if (isset($_POST['banner-upload'])) {
+	$newFileName = $_POST['banner-title'];
 	
 	if (empty($newFileName)) {
-		$newFileName = "gallery";
+		$newFileName = "banner";
 	} else {
 		//create lowercase of filename and replace empty space with -
 		$newFileName = strtolower(str_replace(" ", "-", $newFileName));
 	}
-	$imgTitle = $_POST['page-title'];
-	$imgDescr = $_POST['page-descr'];
+	$imgTitle = $_POST['banner-title'];
+	$imgDescr = $_POST['banner-desc'];
 	
-	$pageImg = $_FILES['page-img'];
+	$bannerImg = $_FILES['banner-file'];
 	
-	$fileName = $pageImg['name'];
-	$fileType = $pageImg['type'];
-	$fileTempName = $pageImg['tmp_name'];
-	$fileError = $pageImg['error'];
-	$fileSize = $pageImg['size'];
+	$fileName = $bannerImg['name'];
+	$fileType = $bannerImg['type'];
+	$fileTempName = $bannerImg['tmp_name'];
+	$fileError = $bannerImg['error'];
+	$fileSize = $bannerImg['size'];
 	
 	$fileExtension = explode(".", $fileName);
 	$fileActualExt = strtolower(end($fileExtension));
@@ -29,15 +29,15 @@ if (isset($_POST['page-upload'])) {
 		if ($fileError === 0) {
 			if ( $fileSize < 2000000 ){
 				$imageFullName = $newFileName . "." . uniqid("", true) . "." . $fileActualExt;
-				$fileDestination = "../img/gallery/" . $imageFullName;
+				$fileDestination = "../img/banner/" . $imageFullName;
 				
 				include_once "dbh.incl.php";
 				
 				if (empty($imgTitle) || empty($imgDescr)) {
-					header("Location: ../page-post.php?upload=empty");
+					header("Location: ../banner-post.php?upload=empty");
 					exit();
 				} else {
-					$sql = "SELECT * FROM pages;";
+					$sql = "SELECT * FROM banner";
 					$stmt = mysqli_stmt_init($conn);
 					if (!mysqli_stmt_prepare($stmt, $sql)) {
 						echo"SQL statement gefaald 1!";
@@ -47,7 +47,7 @@ if (isset($_POST['page-upload'])) {
 //						$rowCount = mysqli_num_rows($result);
 //						$setImageOrder = $rowCount + 1;
 						
-						$sql = "INSERT INTO pages (titlePage, descPage, imgPage) VALUES (?, ?, ?);";
+						$sql = "INSERT INTO banner (titleBanner, descBanner, imageBanner) VALUES (?, ?, ?);";
 						if (!mysqli_stmt_prepare($stmt, $sql)) {
 						echo "SQL statement gefaald 2!";
 						}
@@ -58,7 +58,7 @@ if (isset($_POST['page-upload'])) {
 							
 							move_uploaded_file($fileTempName, $fileDestination);
 							
-							header("Location: ../page-manage.php?upload=succes");
+							header("Location: ../banner-post.php?upload=succes");
 							exit();
 						}
 					}
@@ -76,32 +76,33 @@ if (isset($_POST['page-upload'])) {
 		echo 'Om een bestand te uploaden moet het een PNG/JPEG/JPG bestand zijn!';
 	}
 	
-	print_r($pageImg);
+	print_r($bannerImg);
 	
 }
 
-if (isset($_POST['edit-page'])) {
-	//Get posted Variables user entered
-	$page_Id = $_GET['pageId'];
-	
-	$newFileName = $_POST['page-title-edit'];
+// foreach($_POST['name'] as $name)
+if (isset($_POST["edit-banner"])) {
+	// $number = $_POST["id"];    
+
+	// foreach($_POST["id"] AS $num) {	
+	$newFileName = $_POST['banner-title-edit'];
 	
 	if (empty($newFileName)) {
-		$newFileName = "page-gallery";
+		$newFileName = "banner-gallery";
 	} else {
 		//create lowercase of filename and replace empty space with -
 		$newFileName = strtolower(str_replace(" ", "-", $newFileName));
 	}
-	$imgTitle = $_POST['page-title-edit'];
-	$imgDescr = $_POST['page-text-edit'];
+	$imgTitle = $_POST['Banner-title-edit'];
+	$imgDescr = $_POST['casousel-text-edit'];
 	
-	$pageImg = $_FILES['edit-page-img'];
+	$bannerImg = $_FILES['edit-Banner-img'];
 	
-	$fileName = $pageImg['name'];
-	$fileType = $pageImg['type'];
-	$fileTempName = $pageImg['tmp_name'];
-	$fileError = $pageImg['error'];
-	$fileSize = $pageImg['size'];
+	$fileName = $bannerImg['name'];
+	$fileType = $bannerImg['type'];
+	$fileTempName = $bannerImg['tmp_name'];
+	$fileError = $bannerImg['error'];
+	$fileSize = $bannerImg['size'];
 	
 	$fileExtension = explode(".", $fileName);
 	$fileActualExt = strtolower(end($fileExtension));
@@ -110,20 +111,20 @@ if (isset($_POST['edit-page'])) {
 	
 	if (empty($fileName)) {
 		include_once "dbh.incl.php";
-		$sql = "SELECT titlePage, descPage FROM pages;";
+		$sql = "SELECT titlebanner, descbanner FROM banners;";
 		$stmt = mysqli_stmt_init($conn);
 		if (!mysqli_stmt_prepare($stmt, $sql)) {
 				printf("SQL statement gefaald 1!");
 			} else {
 				mysqli_stmt_execute($stmt);
 				$result = mysqli_stmt_get_result($stmt);
-				$sql = "UPDATE pages SET titlePage =?, descPage =? WHERE idPage =?";
+				$sql = "UPDATE banner SET titleBanner =?, descBanner =? WHERE idBanner =?";
 				if (!mysqli_stmt_prepare($stmt, $sql)) {
 					print("SQL statement gefaald 2!");
 				} else {
-					mysqli_stmt_bind_param($stmt, "sss", $imgTitle, $imgDescr, $page_Id);
+					mysqli_stmt_bind_param($stmt, "sss", $imgTitle, $imgDescr, $Banner_id);
 					mysqli_stmt_execute($stmt);
-					header("Location: ../blog-app/page-manage.php?pageId=". $page_Id ."&uploadtextonly=succes");
+					header("Location: ../blog-app/banner-post.php?uploadtextonly=succes");
 					exit();
 				} 
 			}
@@ -135,15 +136,15 @@ if (isset($_POST['edit-page'])) {
 								// create new name for uploaded file with Uniq Id
 								$imageFullName = $newFileName . "." . uniqid("", true) . "." . $fileActualExt;
 								// destination of file uploaded
-								$fileDestination = dirname(__DIR__) . "/img/gallery/" . $imageFullName;
+								$fileDestination = dirname(__DIR__) . "/img/methods/" . $imageFullName;
 
 								include_once "dbh.incl.php";
 
 								if (empty($imgTitle) || empty($imgDescr)) {
-									header("Location: /blog-app/page-edit.php?uploadTitle&Description=empty");
+									header("Location: /blog-app/banner-edit.php?uploadTitle&Description=empty");
 									exit();
 								} else {
-									$sql = "SELECT titlePage, descPage, imgPage FROM pages;";
+									$sql = "SELECT titlebanner, descbanner, imgbanner FROM banners;";
 									$stmt = mysqli_stmt_init($conn);
 									if (!mysqli_stmt_prepare($stmt, $sql)) {
 										echo"SQL statement gefaald 1!";
@@ -152,7 +153,7 @@ if (isset($_POST['edit-page'])) {
 										$result = mysqli_stmt_get_result($stmt);
 										$rowCount = mysqli_num_rows($result);
 										$setImageOrder = $rowCount + 1;
-										$sql = "UPDATE pages SET titlePage ='" . $imgTitle . "', descPage ='" . $imgDescr . "', imgPage ='" . $imageFullName . "' WHERE idPage ='" . $page_Id . "' ";
+										$sql = "UPDATE banners SET titlebanner ='" . $imgTitle . "', descbanner ='" . $imgDescr . "', imgbanner ='" . $imageFullName . "' WHERE idbanner ='" . $Banner_id . "' ";
 									if (!mysqli_stmt_prepare($stmt, $sql)) {
 										echo "SQL statement gefaald 2!";
 										} else {
@@ -160,14 +161,14 @@ if (isset($_POST['edit-page'])) {
 											mysqli_stmt_execute($stmt);
 											if (file_exists($fileTempName)) {
 												if (move_uploaded_file($fileTempName, $fileDestination)){
-													header("Location: /blog-app/posts-manage.php?pageId=" . $page_Id . "&upload=succes");
+													// header("Location: /blog-app/posts-manage.php?bannerId=" . $Banner_id . "&upload=succes");
 													exit();
 												} else {
-													header("Location: /blog-app/page-edit.php?pageId=" . $page_Id . "&uploadImage=failed");
+													// header("Location: /blog-app/banner-edit.php?bannerId=" . $Banner_id . "&uploadImage=failed");
 													exit();
 												}
 											} else {
-												header("Location: /blog-app/page-edit.php?pageId=" . $page_Id . "&uploadImage=fileDoesntExist");
+												// header("Location: /blog-app/banner-edit.php?bannerId=" . $Banner_id . "&uploadImage=fileDoesntExist");
 												exit();
 											}
 						}
@@ -183,9 +184,9 @@ if (isset($_POST['edit-page'])) {
 
 // Delete article
 if (isset($_POST['yes-delete'])) {
-		$page_Id = $_GET['pageId'];
+		$banner_Id = $_GET['delete-Banner'];
 		include_once "dbh.incl.php";		
-		$sql = "SELECT idPage FROM pages";
+		$sql = "SELECT mediaBanner FROM banner WHERE idBanner = '" . $_GET["delete-Banner"]  . "' LIMIT 1";
 		$stmt = mysqli_stmt_init($conn);
 				if (!mysqli_stmt_prepare($stmt, $sql)) {
 					echo"SQL statement gefaald 1!";
@@ -196,13 +197,34 @@ if (isset($_POST['yes-delete'])) {
 					} else {
 					mysqli_stmt_execute($stmt);
 					$result = mysqli_stmt_get_result($stmt);
-					$sql = "DELETE FROM pages WHERE idPage ='" . $page_Id  . "'";
+					
+					$myArray = array();
+
+					// get image name from server
+					if ($myArray = mysqli_fetch_assoc($result)) { 
+						echo 'wat is dit ';
+						$row = $myArray['mediaBanner'];
+						//file includes absolute file
+						include_once('img/banner/banner.directory.php');
+
+						// $img_map; from directory
+
+						$target_path = $img_map . $row;
+						echo 'naar ' . $target_path;
+					
+						// delete file from directory
+						unlink($target_path);
+					}
+					// delete image from data base
+
+					$sql = "DELETE FROM banner WHERE idBanner =" . $banner_Id  . " ";
+
 					if (!mysqli_stmt_prepare($stmt, $sql)) {
 						echo "SQL statement gefaald 3!";
 					} else {			
 							mysqli_stmt_bind_param($stmt);
 							mysqli_stmt_execute($stmt);
-							header("Location: /blog-app/page-manage.php?artikelId=" . $page_Id . "&delete=succes");
+							header("Location: /blog-app/banner-post.php?bannerlId=" . $banner_Id . "&delete=succes");
 							exit();
 												
 						} 
@@ -211,7 +233,7 @@ if (isset($_POST['yes-delete'])) {
 
 
 if (isset($_POST['no-delete'])) {
-		$page_Id = $_GET['pageId'];
-			header("Location: /blog-app/page-manage.php?page_Id=" . $page_Id . "&delete=succes");
+		$delete = $_GET['yes-delete'];
+			header("Location: /blog-app/banner-post.php?banner_Id=" . $delete_Id . "&delete=stopped");
 			exit();
 	}

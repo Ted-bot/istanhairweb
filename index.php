@@ -1,124 +1,71 @@
 <?php
 	require "header.php";	
+	include "functions.php"
 ?>
 <main class="my-5">
-<div class="col-sm-12">
-	<div class="container-xl">
-		<section class="row">
-		<!--	Preview posts: row 1	-->
-		<?php
-			$query = "SELECT * FROM gallery ORDER BY idGallery DESC  LIMIT 3";
-			$run = $conn->query($query);
-			$rowsCount = mysqli_num_rows($run);
-			$count = 0;
-				while ($row = mysqli_fetch_array($run)) {
-					$count++;
-					$isFirst = ($count == 1) ? true : false;
-					$isSecond = ($count == 2) ? true : false;
-					$isLast = ($count == $rowsCount) ? true : false;
-					$descString = $row["descGallery"];
-					if (!$isLast){
-						echo '<a href="article-page.php?artikelId=' . $row["idGallery"] . '" class="index-row-1-a index-row-1-a-width mx-1" >
-						<div  style="background-image: url(img/gallery/' . $row["imgFullNameGallery"] . '); display:flex; " type="image/jpg" class="imgPosition1 mx-2">
-							<div style="position: absolute; align-self: flex-end; z-index:5;">
-								<h5 class="card-title m-3" style="color: white;">' . $row["titleGallery"] . '</h5>						
-							</div>
-							<div style="background:linear-gradient(transparent, #000000); width: 100%; height: 50%; align-self: flex-end; position: relative; z-index:1;"></div>
-						</div>
-						
-						</a>';
-					}
-				}
 
-		?>
-		</section>
-		<!--	Preview posts: row 2	-->
-		<section>	
-		<?php
-			$query = "SELECT * FROM gallery ORDER BY idGallery DESC  LIMIT 3";
-				$run = $conn->query($query);
-				$rowsCount = mysqli_num_rows($run);
-				$count = 0;
-					while ($row = mysqli_fetch_array($run)) {
-						$count++;
-						$isFirst = ($count == 1) ? true : false;
-						$isSecond = ($count == 2) ? true : false;
-						$isLast = ($count == $rowsCount) ? true : false;
-						$descString = $row["descGallery"];
-						if (!$isSecond && !$isFirst){
-							echo '<a href="article-page.php?artikelId=' . $row["idGallery"] . '" class="m-3">
-							<div  style="background-image: url(img/gallery/' . $row["imgFullNameGallery"] . '); display:flex;" type="image/jpg" class="imgPosition2">	
-								<div style="position: absolute; align-self: flex-end; z-index:5;">
-									<h5 class="card-title m-3" style="color: white;">' . $row["titleGallery"] . '</h5>
-								</div>
-								<div style="background:linear-gradient(transparent, #000000); width: 100%; height: 50%; align-self: flex-end; position: relative; z-index:1;"></div>
-							</div>
-							
-						</a>';
-						}
-					}
+<div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
+  <ol class="carousel-indicators">
+   <?php echo make_slide_indicators($conn); ?>
+  </ol>
+  <div class="carousel-inner">
+  	<?php echo make_slides($conn); ?>
+</div>
+    
+  <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
+    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+    <span class="sr-only">Previous</span>
+  </a>
+  <a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
+    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+    <span class="sr-only">Next</span>
+  </a>
+</div>
 
-		?>
-		</section>
-		<!--	Preview posts: row 3	-->	
+<div class="container" style="display: flex; justify-content: center; text-align: center;">
+	
 		<section class="row">
 			<?php
-				$query = "SELECT * FROM gallery ORDER BY idGallery DESC  LIMIT 4";
+				$query = "SELECT * FROM homeintro ORDER BY idIntro LIMIT 1";
 					$run = $conn->query($query);
 					$rowsCount = mysqli_num_rows($run);
 					$count = 0;
-						while ($row = mysqli_fetch_array($run)) {
-							$count++;
-							$isFirst = ($count == 1) ? true : false;
-							$isSecond = ($count == 2) ? true : false;
-							$isThird = ($count == 3) ? true : false;
-							$isLast = ($count == $rowsCount) ? true : false;
-							$descString = $row["descGallery"];
-							if (!$isSecond && !$isFirst && !$isThird) {
-								echo '<a href="article-page.php?artikelId=' . $row["idGallery"] . '" class="Sevenbarpx m-3">
-								<div  style="background-image: url(img/gallery/' . $row["imgFullNameGallery"] . '); display:flex;" type="image/jpg" class="imgPosition3">
-									<div style="position: absolute; align-self: flex-end; z-index:5;">
-										<h5 class="card-title m-3" style="color: white;">' . $row["titleGallery"] . '</h5>
-									</div>
-									<div style="background:linear-gradient(transparent, #000000); width: 100%; height: 50%; align-self: flex-end; position: relative; z-index:1;""></div>
-								</div>								
-								</a>';
-							}
+						if ($row = mysqli_fetch_array($run)) {
+								echo '<section class="col-sm-10" style="display: flex; flex-direction: column; margin: 0 auto;
+								padding: 10px;
+								position: relative;">
+										<div class="mt-5 pb-5 m-3 " 
+										style="text-align: left; height: 300px; max-width: 80rem;">
+												<h5 class="card-title" style="color: black;">' . $row["titleIntro"] . '</h5>
+												<div class="font-weight-normal" 
+												>
+												' . $row["descIntro"] . '</div>
+												<br style="height: 10px;" />
+												<button type="button">Link To</button>
+										</div>										
+									</section>';
+
+									
 						}
 				?>
 		</section>
-		<!--	Preview posts: row 4	-->
-		<section class="mx-3">	
-		<?php
-			$query = "SELECT * FROM gallery ORDER BY idGallery DESC  LIMIT 7";
-				$run = $conn->query($query);
-				$rowsCount = mysqli_num_rows($run);
-				$count = 0;
-					while ($row = mysqli_fetch_array($run)) {
-						$count++;
-						$isFirst = ($count == 1) ? true : false;
-						$isSecond = ($count == 2) ? true : false;
-						$isThird = ($count == 3) ? true : false;
-						$isFourth = ($count == 4) ? true : false;
-						$isLast = ($count == $rowsCount) ? true : false;
-						$descString = $row["descGallery"];
-						if (!$isSecond && !$isFirst && !$isThird && !$isFourth){
-							echo '<a class="a-hover" href="article-page.php?artikelId=' . $row["idGallery"] . '" class="m-3">
-							<section class="row">
-									<img  src="img/gallery/' . $row["imgFullNameGallery"] . '" class="imgPosition4">
-									<section class="mx-3">
-										<h5 class="card-title">' . $row["titleGallery"] . '</h5>
-										<p class="card-text">' . substr($descString, 0, 30) . '..</p>
-									</section>
-							</section>
-							</a>';
-						}
-					}
-				?>
-			</section>
-		</div>	
-	</div>	
+		
+</div>
+
+<?php  home_banner_thumbnails() ?>
+
+
+<div style="background-color: #add8e6;">
+	<div style="postition: relative; display: block; z-index: 1;">
+		<script src="https://apps.elfsight.com/p/platform.js" defer></script>
+		<div class="elfsight-app-401d2cf5-a6e3-46f2-a632-ac3dd5af95c0"></div>
+	</div>
+	
+	<div style="position: relative; display: block; margin: -67px auto 0; background-color: #add8e6; width: 220px; height: 80px; z-index: 20"></div>
+</div>
+
 </main>
+
 <!--login-->
 <script async src=”//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js”></script>
 <ins class=”adsbygoogle”
