@@ -47,6 +47,9 @@
 	</div>
 </div>
 </main>
+
+<!-- admin pageheader ending div tag -->
+</div>
 <?php
 	require "footer.php";
 ?>
