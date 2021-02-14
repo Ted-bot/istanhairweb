@@ -1,0 +1,41 @@
+body{
+  margin: 0;
+  padding: 0;
+}
+
+.slider{
+  width: 420px;
+  height: 350px;
+  display: flex;
+  background: url("https://www.nielsenhaarkliniek.nl/wp-content/uploads/2019/10/Karel-Del-casteleto-Na.jpeg") no-repeat;
+  background-position: 0 15%;
+  background-size: 40vw;
+  position: relative;
+  object-fit: center;
+}
+
+.slider input{
+  -webkit-appearance: none;
+  width: 100%;
+  background: none;
+  z-index: 10;
+}
+
+.slider input::-webkit-slider-thumb{
+  -webkit-appearance: none;
+  width: 10px;
+  height: 350px;
+  background-color: #111;
+  cursor: pointer;
+}
+
+.original-image{
+  position: absolute;
+  left: 0;
+  width: 50%;
+  height: 350px;
+  background: url("https://www.nielsenhaarkliniek.nl/wp-content/uploads/2019/10/Karel-Del-casteleto-Voor.jpeg") no-repeat;
+  background-position: 0 15%;
+  background-size: 40vw;
+  object-fit: center;
+}
